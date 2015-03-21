@@ -1,18 +1,18 @@
 {
   "name": "spit",
   "version": "1.0.0",
-  "description": "an asynchronous event emitter",
+  "description": "an asynchronous event emitter utilizing promises",
   "main": "index.js",
   "scripts": {
     "test": "lab -a code -t 100 -L"
   },
-  "author": "",
+  "author": "Nathan LaFreniere <quitlahok@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "code": "^1.3.0",
     "lab": "^5.4.0"
   },
   "dependencies": {
-    "items": "^1.1.0"
+    "bluebird": "^2.9.14"
   }
 }
