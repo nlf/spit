@@ -125,6 +125,11 @@ it('rejects promises appropriately', function (done) {
         return Promise.reject(new Error('failed'));
     });
 
+    ee.on('test', function () {
+
+        expect(true).to.equal(false);
+    });
+
     ee.emit('test').catch(function (err) {
 
         expect(err).to.exist();
