@@ -2,7 +2,7 @@
   "name": "spit",
   "version": "2.0.2",
   "description": "an asynchronous event emitter utilizing promises",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "lab -a code -t 100 -L"
   },
