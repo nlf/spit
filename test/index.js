@@ -1,4 +1,3 @@
-var Promise = require('bluebird');
 var Spit = require('../');
 
 var lab = exports.lab = require('lab').script();
@@ -34,6 +33,7 @@ it('can ignore result', function (done) {
 it('calls listeners in order', function (done) {
 
     var ee = new Spit();
+
     ee.on('test', function (data) {
 
         expect(data.count).to.equal(0);
@@ -44,16 +44,26 @@ it('calls listeners in order', function (done) {
 
         expect(data.count).to.equal(1);
         ++data.count;
-        return Promise.delay(20);
+        return new Promise(function (resolve) {
+
+            setTimeout(function () {
+
+                return resolve();
+            }, 20);
+        });
     });
 
     ee.on('test', function (data) {
 
+        var end = process.hrtime(start);
+        var ms = end[1] / 1000000;
+        expect(ms).to.be.above(20);
         expect(data.count).to.equal(2);
         ++data.count;
     });
 
     var state = { count: 0 };
+    var start = process.hrtime();
     ee.emit('test', state).then(function () {
 
         expect(state.count).to.equal(3);
