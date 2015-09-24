@@ -1,19 +1,23 @@
 {
   "name": "spit",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "an asynchronous event emitter utilizing promises",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nlf/spit.git"
+  },
   "scripts": {
     "test": "lab -a code -t 100 -L"
   },
   "author": "Nathan LaFreniere <quitlahok@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "code": "^1.3.0",
-    "lab": "^5.4.0"
+    "code": "^1.5.0",
+    "lab": "^5.18.1"
   },
   "dependencies": {},
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=4.0.0"
   }
 }
