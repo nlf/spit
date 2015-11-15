@@ -1,6 +1,6 @@
 {
   "name": "spit",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "an asynchronous event emitter utilizing promises",
   "main": "lib/index.js",
   "repository": {
