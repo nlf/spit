@@ -13,8 +13,8 @@
   "author": "Nathan LaFreniere <quitlahok@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "code": "^1.5.0",
-    "lab": "^5.18.1"
+    "code": "^2.0.1",
+    "lab": "^7.3.0"
   },
   "dependencies": {},
   "engines": {

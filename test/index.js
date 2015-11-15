@@ -1,27 +1,29 @@
-var Spit = require('../');
+'use strict';
 
-var lab = exports.lab = require('lab').script();
-var expect = require('code').expect;
-var it = lab.test;
+const Spit = require('../');
 
-it('can be used asynchronously', function (done) {
+const lab = exports.lab = require('lab').script();
+const expect = require('code').expect;
+const it = lab.test;
 
-    var ee = new Spit();
-    ee.on('test', function (data) {
+it('can be used asynchronously', (done) => {
+
+    const ee = new Spit();
+    ee.on('test', (data) => {
 
         expect(data).to.equal('bacon');
     });
 
-    ee.emit('test', 'bacon').then(function () {
+    ee.emit('test', 'bacon').then(() => {
 
         done();
     });
 });
 
-it('can ignore result', function (done) {
+it('can ignore result', (done) => {
 
-    var ee = new Spit();
-    ee.on('test', function (data) {
+    const ee = new Spit();
+    ee.on('test', (data) => {
 
         expect(data).to.equal('bacon');
         done();
@@ -30,61 +32,61 @@ it('can ignore result', function (done) {
     ee.emit('test', 'bacon');
 });
 
-it('calls listeners in order', function (done) {
+it('calls listeners in order', (done) => {
 
-    var ee = new Spit();
+    const ee = new Spit();
 
-    ee.on('test', function (data) {
+    ee.on('test', (data) => {
 
         expect(data.count).to.equal(0);
         ++data.count;
     });
 
-    ee.on('test', function (data) {
+    ee.on('test', (data) => {
 
         expect(data.count).to.equal(1);
         ++data.count;
-        return new Promise(function (resolve) {
+        return new Promise((resolve) => {
 
-            setTimeout(function () {
+            setTimeout(() => {
 
                 return resolve();
             }, 20);
         });
     });
 
-    ee.on('test', function (data) {
+    ee.on('test', (data) => {
 
-        var end = process.hrtime(start);
-        var ms = end[1] / 1000000;
+        const end = process.hrtime(start);
+        const ms = end[1] / 1000000;
         expect(ms).to.be.above(20);
         expect(data.count).to.equal(2);
         ++data.count;
     });
 
-    var state = { count: 0 };
-    var start = process.hrtime();
-    ee.emit('test', state).then(function () {
+    const state = { count: 0 };
+    const start = process.hrtime();
+    ee.emit('test', state).then(() => {
 
         expect(state.count).to.equal(3);
         done();
     });
 });
 
-it('can listen to an event one time', function (done) {
+it('can listen to an event one time', (done) => {
 
-    var ee = new Spit();
-    ee.once('test', function (data) {
+    const ee = new Spit();
+    ee.once('test', (data) => {
 
         expect(data.count).to.equal(0);
         ++data.count;
     });
 
-    var state = { count: 0 };
-    ee.emit('test', state).then(function () {
+    const state = { count: 0 };
+    ee.emit('test', state).then(() => {
 
         expect(state.count).to.equal(1);
-        ee.emit('test', state).then(function () {
+        ee.emit('test', state).then(() => {
 
             expect(state.count).to.equal(1);
             done();
@@ -92,55 +94,55 @@ it('can listen to an event one time', function (done) {
     });
 });
 
-it('calls emit callback immediately when no listeners exist', function (done) {
+it('calls emit callback immediately when no listeners exist', (done) => {
 
-    var ee = new Spit();
-    ee.emit('test').then(function () {
+    const ee = new Spit();
+    ee.emit('test').then(() => {
 
         done();
     });
 });
 
-it('emits newListener when adding a listener', function (done) {
+it('emits newListener when adding a listener', (done) => {
 
-    var ee = new Spit();
-    ee.on('newListener', function (event, listener) {
+    const ee = new Spit();
+    ee.on('newListener', (event, listener) => {
 
         expect(event).to.equal('test');
         expect(listener).to.be.an.instanceof(Function);
         done();
     });
 
-    ee.on('test', function () {});
+    ee.on('test', () => {});
 });
 
-it('emits newListener when adding a listener via once', function (done) {
+it('emits newListener when adding a listener via once', (done) => {
 
-    var ee = new Spit();
-    ee.on('newListener', function (event, listener) {
+    const ee = new Spit();
+    ee.on('newListener', (event, listener) => {
 
         expect(event).to.equal('test');
         expect(listener).to.be.an.instanceof(Function);
         done();
     });
 
-    ee.once('test', function () {});
+    ee.once('test', () => {});
 });
 
-it('rejects promises appropriately', function (done) {
+it('rejects promises appropriately', (done) => {
 
-    var ee = new Spit();
-    ee.on('test', function () {
+    const ee = new Spit();
+    ee.on('test', () => {
 
         return Promise.reject(new Error('failed'));
     });
 
-    ee.on('test', function () {
+    ee.on('test', () => {
 
         expect(true).to.equal(false);
     });
 
-    ee.emit('test').catch(function (err) {
+    ee.emit('test').catch((err) => {
 
         expect(err).to.exist();
         expect(err.message).to.equal('failed');
@@ -148,10 +150,10 @@ it('rejects promises appropriately', function (done) {
     });
 });
 
-it('returns a default error if none is provided when emitting error', function (done) {
+it('returns a default error if none is provided when emitting error', (done) => {
 
-    var ee = new Spit();
-    ee.emit('error').catch(function (err) {
+    const ee = new Spit();
+    ee.emit('error').catch((err) => {
 
         expect(err).to.exist();
         expect(err.message).to.equal('Uncaught, unspecified "error" event.');
@@ -159,10 +161,10 @@ it('returns a default error if none is provided when emitting error', function (
     });
 });
 
-it('returns the given error when emitting error', function (done) {
+it('returns the given error when emitting error', (done) => {
 
-    var ee = new Spit();
-    ee.emit('error', new Error('failed')).catch(function (err) {
+    const ee = new Spit();
+    ee.emit('error', new Error('failed')).catch((err) => {
 
         expect(err).to.exist();
         expect(err.message).to.equal('failed');
